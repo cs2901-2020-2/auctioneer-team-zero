@@ -13,16 +13,9 @@ public class Bidder implements Observer {
         this.bidderName = bidderName;
     }
 
-
     @Override
     public void update(Object data) { current_bid = (double)data;}
 
     @Override
     public String getName() { return bidderName;}
-
-
-    public boolean bid() {
-
-        return true;
-    }
 }

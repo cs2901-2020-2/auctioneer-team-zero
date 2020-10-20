@@ -41,27 +41,17 @@ public class Auctioneer implements Subject {
         return bidders.size();
     }
 
-    /*
-    public void updateBid(double bid) {
-        this.current_bid = bid;
-
-        notifyObservers();
-    }
-    */
-
 
     @Override
-    public void setBidAmount(Observer observer,double newBidAmount){
+    public synchronized void setBidAmount(Observer observer,double newBidAmount) throws Exception{
+
         if(this.current_bid < newBidAmount && this.observer.getName() != observer.getName()){
             this.observer=observer;
             this.current_bid=newBidAmount;
             notifyObservers();
         }
         else {
-            logger.info("not setted");
+            throw new Exception("bad bid");
         }
-
     }
-
-
 }
