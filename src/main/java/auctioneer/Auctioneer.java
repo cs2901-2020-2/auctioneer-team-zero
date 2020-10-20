@@ -8,6 +8,7 @@ public class Auctioneer implements Subject {
     private List<Observer> bidders;
     private double current_bid;
     private Observer observer;
+    private String bidderName;
 
 
     public Auctioneer(double bidAmount){
@@ -30,28 +31,28 @@ public class Auctioneer implements Subject {
         }
     }
 
-    public void getBid(double bid) {
-        this.current_bid = bid;
-
-        notifyObservers();
+    @Override
+    public double getBid() {
+        return this.current_bid;
     }
 
     @Override
     public int getSize() {
         return bidders.size();
     }
+    @Override
+    public String getName() {
+        return this.bidderName;
+    }
 
 
     @Override
-    public synchronized void setBidAmount(Observer observer,double newBidAmount) throws Exception{
+    public synchronized void setBidAmount(String bidderName,double newBidAmount) throws Exception{
 
-        if(this.current_bid < newBidAmount && this.observer.getName() != observer.getName()){
-            this.observer=observer;
-            this.current_bid=newBidAmount;
-            notifyObservers();
-        }
-        else {
-            throw new Exception("bad bid");
-        }
+        this.current_bid=newBidAmount;
+        this.bidderName = this.observer.getName();
+        notifyObservers();
+
+
     }
 }
