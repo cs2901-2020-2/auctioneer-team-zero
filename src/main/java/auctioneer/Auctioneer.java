@@ -7,13 +7,19 @@ public class Auctioneer implements Subject {
     static private final Logger logger = Logger.getLogger(Auctioneer.class.getName());
     private List<Observer> bidders;
     private double current_bid;
-    private Observer observer;
-    private String bidderName;
+    private String lastBidder;
 
+
+    public Auctioneer(){
+        this.current_bid = 0;
+        this.lastBidder = "";
+    }
 
     public Auctioneer(double bidAmount){
-        this.current_bid=bidAmount;
+        this.current_bid = bidAmount;
+        this.lastBidder = "";
     }
+
     @Override
     public void registerObserver(Observer o) {
         bidders.add(o);
@@ -26,7 +32,7 @@ public class Auctioneer implements Subject {
 
     @Override
     public void notifyObservers() {
-        for(var bidder : bidders) {
+        for (Observer bidder : bidders) {
             bidder.update(this.current_bid);
         }
     }
@@ -41,18 +47,19 @@ public class Auctioneer implements Subject {
         return bidders.size();
     }
     @Override
-    public String getName() {
-        return this.bidderName;
+    public String getLastBidder() {
+        return this.lastBidder;
     }
 
 
     @Override
-    public synchronized void setBidAmount(String bidderName,double newBidAmount) throws Exception{
-
-        this.current_bid=newBidAmount;
-        this.bidderName = this.observer.getName();
-        notifyObservers();
-
-
+    public synchronized boolean setBidAmount(String bidderName,double newBidAmount){
+        if (bidderName != lastBidder){
+            this.current_bid=newBidAmount;
+            this.lastBidder = bidderName;
+            notifyObservers();
+            return true;
+        }
+        return false;
     }
 }

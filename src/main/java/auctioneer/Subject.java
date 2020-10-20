@@ -7,10 +7,10 @@ public interface Subject {
 
     public void notifyObservers();
 
-    public void setBidAmount(String bidderName, double newBidAmount) throws Exception;
+    public boolean setBidAmount(String bidderName, double newBidAmount);
 
     public int getSize();
 
-    public String getName();
+    public String getLastBidder();
     public double getBid();
 }
