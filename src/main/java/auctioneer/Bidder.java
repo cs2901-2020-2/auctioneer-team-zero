@@ -1,12 +1,9 @@
 package auctioneer;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class Bidder implements Observer {
-    static private final Logger logger = Logger.getLogger(Bidder.class.getName());
-    private double total;
-    private double current_bid;
+    private double currentBid;
     private String bidderName;
 
     public Bidder(String bidderName) {
@@ -15,7 +12,7 @@ public class Bidder implements Observer {
 
     @Override
     public boolean bid(Subject auctioneer, double bid) {
-        if(bid > current_bid){
+        if(bid > currentBid){
             return auctioneer.setBidAmount(bidderName, bid);
         } else{
             return false;
@@ -23,8 +20,8 @@ public class Bidder implements Observer {
     }
 
     @Override
-    public void update(Object data) { current_bid = (double)data;}
+    public void update(Object data) { currentBid = (double)data;}
 
     @Override
-    public double getMaxBid() {return current_bid;}
+    public double getMaxBid() {return currentBid;}
 }

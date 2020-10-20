@@ -4,7 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Test
-public class Auction {
+public class AuctionTest {
 
     public void registerTest(){
         Subject auctioneer = new Auctioneer();
@@ -38,6 +38,29 @@ public class Auction {
         bidder1.bid(auctioneer, 20);
         bidder2.bid(auctioneer, 30);
         Assert.assertEquals(auctioneer.getBid(), 30);
+    }
+
+    public void lastBidderTest(){
+        Subject auctioneer = new Auctioneer();
+        Observer bidder = new Bidder("Bidder1");
+        auctioneer.registerObserver(bidder);
+        bidder.bid(auctioneer, 20);
+        Assert.assertEquals(auctioneer.getLastBidder(), "Bidder1");
+    }
+
+    public void invalidBidAmountTest(){
+        Subject auctioneer = new Auctioneer(50);
+        Observer bidder = new Bidder("Bidder1");
+        auctioneer.registerObserver(bidder);
+        Assert.assertEquals(bidder.bid(auctioneer, 20), false);
+    }
+
+    public void sameBiddertest(){
+        Subject auctioneer = new Auctioneer();
+        Observer bidder = new Bidder("Bidder1");
+        auctioneer.registerObserver(bidder);
+        bidder.bid(auctioneer, 10);
+        Assert.assertEquals(bidder.bid(auctioneer, 20), false);
     }
 
 }
